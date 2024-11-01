@@ -4,8 +4,8 @@ import { DOMParser } from "@xmldom/xmldom";
 import parse from "html-react-parser";
 // import classes from "./DocxReader2.module.css";
 import omml2mathml from "omml2mathml";
-import './DocxReader.css'
-import converter_img from "../../src/images/Web 1920 – 1.png"
+import "./DocxReader.css";
+import converter_img from "../../src/images/Web 1920 – 1.png";
 // import MathJax from 'mathjax-full'
 // import EditorComponent from "./EditorComponent";
 // import xml2js from "xml-js";
@@ -27,50 +27,54 @@ let hindisolutions = [];
 let base64array = [];
 
 // const QuestionOption = ({ label, option, images }) => {
-  //   // const imageToTinyMce =images.map((image, imageIndex) => (
-  //   //       <img
-  //   //         key={imageIndex}
-  //   //         src={image.imageUrl}
-  //   //         alt={`Image ${imageIndex + 1}`}
-  //   //         className={classes.imageFile}
-  //   //       />
-  //   //     ))
+//   // const imageToTinyMce =images.map((image, imageIndex) => (
+//   //       <img
+//   //         key={imageIndex}
+//   //         src={image.imageUrl}
+//   //         alt={`Image ${imageIndex + 1}`}
+//   //         className={classes.imageFile}
+//   //       />
+//   //     ))
 
-  //   const generateImageTag = (image) => {
-  //     return `<img src="${image.imageUrl}" alt="Image" class="${classes.imageFile}" />`;
-  //   };
+//   const generateImageTag = (image) => {
+//     return `<img src="${image.imageUrl}" alt="Image" class="${classes.imageFile}" />`;
+//   };
 
-  //   const getEditorContent = (option, images) => {
-  //     let content = option;
+//   const getEditorContent = (option, images) => {
+//     let content = option;
 
-  //     if (images && images.length > 0) {
-  //       images.forEach((image, index) => {
-  //         content += generateImageTag(image);
-  //       });
-  //     }
-  //     console.log(getEditorContent)
-  //     return content;
-  //   };
+//     if (images && images.length > 0) {
+//       images.forEach((image, index) => {
+//         content += generateImageTag(image);
+//       });
+//     }
+//     console.log(getEditorContent)
+//     return content;
+//   };
 
-  //   const editorContent = getEditorContent(option, images);
+//   const editorContent = getEditorContent(option, images);
 
-  //   return (
-  //     <div>
-  //       {console.log("editorContent",editorContent)}
-  //       <EditorComponent key={option} title={label} content={editorContent} />
-  //     </div>
-  //   );
+//   return (
+//     <div>
+//       {console.log("editorContent",editorContent)}
+//       <EditorComponent key={option} title={label} content={editorContent} />
+//     </div>
+//   );
 // };
 
-let equationArray = []
+let equationArray = [];
 const QuestionOption = ({ label, option, images }) => (
   <div>
-    <p><h4> {label}</h4></p>
+    <p>
+      <h4> {label}</h4>
+    </p>
     {/* <p
       dangerouslySetInnerHTML={{ __html: option.replace(/\n/g, "<br />") }}
       style={{ whiteSpace: "pre-line" }}
     ></p> */}
-    <p><h6>{parse(option)}</h6></p>
+    <p>
+      <h6>{parse(option)}</h6>
+    </p>
     {/* Display images if available */}
     {images && images.length > 0 && (
       <div>
@@ -80,7 +84,6 @@ const QuestionOption = ({ label, option, images }) => (
             key={imageIndex}
             src={image.imageUrl}
             alt={`${imageIndex + 1}`}
-
           />
         ))}
       </div>
@@ -89,20 +92,20 @@ const QuestionOption = ({ label, option, images }) => (
 );
 
 // const convertOMMLtoMathML = async (ommlData) => {
-  //   // Replace the following OMML with your actual OMML content
-  //   const ommlContent = ommlData;
+//   // Replace the following OMML with your actual OMML content
+//   const ommlContent = ommlData;
 
-  //   // Retrieve the MathML from the MathJax API
-  //   const mathML = await window.MathJax.startup.promise.then(()=>{
-  //   // const mathML = await window.MathJax.startup.promise.then(() => {
-  //     return MathJax.typeset({
-  //       math: ommlContent,
-  //       format: 'MathML',
-  //       html: true,
-  //     });
-  //   });
-  //   console.log(mathML)
-  //   equationArray.push(mathML);
+//   // Retrieve the MathML from the MathJax API
+//   const mathML = await window.MathJax.startup.promise.then(()=>{
+//   // const mathML = await window.MathJax.startup.promise.then(() => {
+//     return MathJax.typeset({
+//       math: ommlContent,
+//       format: 'MathML',
+//       html: true,
+//     });
+//   });
+//   console.log(mathML)
+//   equationArray.push(mathML);
 // }
 
 async function processImage(imagePart, imageDataReference) {
@@ -111,7 +114,6 @@ async function processImage(imagePart, imageDataReference) {
     const imageUrl = `data:image/png;base64,${base64Data}`;
     base64array.push({ reference: imageDataReference, imageUrl });
     // console.log(base64array)
-
   } catch (error) {
     console.error("Error reading image file:", error);
   }
@@ -131,7 +133,6 @@ const checkForOMathTag = (tag) => {
 
   // Use the result as needed
   // console.log(`Tag ${tag.tagName} has <m:oMath> tag: ${hasOMathTag}`);
-
 };
 
 const processParagraphs = async (docxData) => {
@@ -152,7 +153,7 @@ const processParagraphs = async (docxData) => {
     answer: null,
     EnglishSolution: null,
     hindiSolution: null,
-    sections: { option: "section" }
+    sections: { option: "section" },
   };
   let drawingArray = [];
   let Questions = [];
@@ -167,9 +168,6 @@ const processParagraphs = async (docxData) => {
   const zip = await JSZip.loadAsync(docxData);
   // console.log(zip)
   const documentXml = zip.file("word/document.xml");
-
-
-
 
   if (documentXml) {
     const documentXmlContent = await documentXml.async("text");
@@ -212,8 +210,7 @@ const processParagraphs = async (docxData) => {
       } else if (currentTag.tagName === "m:oMath") {
         let ommlData = currentTag;
         html_mathml_dataurl_Array.push(paraAndImageXml[i]);
-        let trialmathmlElement = omml2mathml(ommlData)
-
+        let trialmathmlElement = omml2mathml(ommlData);
 
         // console.log("trialmathmlelement")
         // console.log(trialmathmlElement);
@@ -228,7 +225,6 @@ const processParagraphs = async (docxData) => {
       }
     }
     // console.log(DrawingArrayForXmlDoc);
-
 
     // console.log("arrayforXmlDoc")
     // console.log(arrayForxmlDoc);
@@ -248,11 +244,14 @@ const processParagraphs = async (docxData) => {
         .replace(/<\/pPr>/g, "</span>")
         .replace(/<pStyle[^>]*w:val="([^"]*)"[^>]*>/g, '<span class="$1">')
         .replace(/<w:jc[^>]*w:val="([^"]*)"[^>]*>/g, 'style="text-align: $1;"')
-        .replace(/<span[^>]*font-family: ([^;"]*);[^>]*font-weight: bold;[^>]*font-size: 20px;[^>]*>/g, '<span style="font-family: $1; font-weight: bold; font-size: 20px;">')
-        .replace(/<span[^>]*font-size: 20px;[^>]*>/g, '')
-        .replace(/<\/span>/g, '')
-        .replace(/<w:t[^>]*>/g, '')
-        .replace(/<\/w:t>/g, '');
+        .replace(
+          /<span[^>]*font-family: ([^;"]*);[^>]*font-weight: bold;[^>]*font-size: 20px;[^>]*>/g,
+          '<span style="font-family: $1; font-weight: bold; font-size: 20px;">'
+        )
+        .replace(/<span[^>]*font-size: 20px;[^>]*>/g, "")
+        .replace(/<\/span>/g, "")
+        .replace(/<w:t[^>]*>/g, "")
+        .replace(/<\/w:t>/g, "");
 
       return htmlString;
     };
@@ -270,27 +269,24 @@ const processParagraphs = async (docxData) => {
         let j = i;
         let text2;
         if (j < arrayForxmlDoc.length - 1) {
-
           text2 = html_mathml_dataurl_Array[j + 1].textContent;
-
         }
 
-        const hasOMathTag = html_mathml_dataurl_Array[i].getElementsByTagName("m:oMath").length > 0;
+        const hasOMathTag =
+          html_mathml_dataurl_Array[i].getElementsByTagName("m:oMath").length >
+          0;
         if (hasOMathTag) {
           // alert("found it true")
           const newTExt = text.replace(text2, arrayForxmlDoc[i + 1]);
           // console.log(newTExt);
-          question1Array.push(newTExt)
-        }
-        else {
+          question1Array.push(newTExt);
+        } else {
           // alert("found it false")
           question1Array.push(text);
         }
         // let string = JSON.stringify(currentTag);
         // const htmlString = convertXmlToHtml(string);
         // html_mathml_dataurl_Array.push(currentTag);
-
-
       } else if (currentTag.tagName === "w:drawing") {
         const drawingElement = currentTag;
         // alert(currentTag)
@@ -405,9 +401,6 @@ const processParagraphs = async (docxData) => {
       //   question1Array.push(currentTag);
 
       //   // alert(question1Array[question1Array.length-1] )
-
-
-
 
       // }
     }
@@ -584,7 +577,7 @@ const processParagraphs = async (docxData) => {
   // }
 
   let count = 1;
-  let englishQuestionArray = []
+  let englishQuestionArray = [];
 
   for (var i = 0; i < question1Array.length; i++) {
     var element = question1Array[i];
@@ -592,8 +585,8 @@ const processParagraphs = async (docxData) => {
     if (typeof element === "string") {
       if (flag === 12) {
         if (element.startsWith("[E]")) {
-          currentEnglishOption = { option: "----empty----", image: [] }
-          currentEnglishQuestion = { option: "----empty----", image: [] }
+          currentEnglishOption = { option: "----empty----", image: [] };
+          currentEnglishQuestion = { option: "----empty----", image: [] };
 
           // if (!questionData.englishQuestion.option) {
           //   questionData.englishQuestion = currentEnglishQuestion
@@ -658,13 +651,11 @@ const processParagraphs = async (docxData) => {
           };
           i--;
           flag = 0;
-        }
-        else if (element.startsWith("[End]")) {
+        } else if (element.startsWith("[End]")) {
           Questions.push(questionData);
 
           break;
-        }
-        else {
+        } else {
           i--;
           flag = 0;
         }
@@ -691,12 +682,12 @@ const processParagraphs = async (docxData) => {
             answer: { option: "----empty----", image: [] },
             EnglishSolution: { option: "----empty----", image: [] },
             hindiSolution: { option: "----empty----", image: [] },
-            sections: { option: "section" }
+            sections: { option: "section" },
           };
           flag = 0;
         }
         currentEnglishOption = null;
-        englishQuestionArray.push(element.replace("[E]", ""))
+        englishQuestionArray.push(element.replace("[E]", ""));
         currentEnglishQuestion = {
           option: element.replace("[E]", "Q."),
           image: [],
@@ -709,7 +700,7 @@ const processParagraphs = async (docxData) => {
         currentEnglishQuestion = null;
 
         // If it starts with (#a), it's an English option A
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
 
         currentEnglishOption = {
           option: element.replace("(#a)", "(a)"),
@@ -721,7 +712,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.englishOptionA = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("(#b)", "(b)"),
           image: [],
@@ -733,7 +724,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.englishOptionB = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("(#c)", "(c)"),
           image: [],
@@ -743,10 +734,9 @@ const processParagraphs = async (docxData) => {
       } else if (element.includes("(#d)")) {
         // console.log(element)
 
-
         questionData.englishOptionC = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("(#d)", "(d)"),
           image: [],
@@ -756,10 +746,9 @@ const processParagraphs = async (docxData) => {
       } else if (element.includes("[H]")) {
         // console.log(element)
 
-
         questionData.englishOptionD = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishQuestion = {
           option: element.replace("[H]", "Q."),
           image: [],
@@ -770,7 +759,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.hindiQuestion = currentEnglishQuestion;
         currentEnglishQuestion = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("(ha)", "(a)"),
           image: [],
@@ -781,7 +770,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.HindiOptionA = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("(hb)", "(b)"),
           image: [],
@@ -792,7 +781,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.HindiOptionB = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("(hc)", "(c)"),
           image: [],
@@ -803,7 +792,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.HindiOptionC = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("(hd)", "(d)"),
           image: [],
@@ -814,7 +803,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.HindiOptionD = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("[ans]", " "),
           image: [],
@@ -825,7 +814,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.answer = currentEnglishOption;
         currentEnglishOption = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("[Sol]", " "),
           image: [],
@@ -836,7 +825,7 @@ const processParagraphs = async (docxData) => {
 
         questionData.EnglishSolution = currentEnglishOption;
         // currentEnglishQuestion = null;
-        englishQuestionArray.push(element)
+        englishQuestionArray.push(element);
         currentEnglishOption = {
           option: element.replace("[HSol]", " "),
           image: [],
@@ -844,58 +833,45 @@ const processParagraphs = async (docxData) => {
         questionData.hindiSolution = currentEnglishOption;
 
         flag = 1;
-      }
-      else if (element.includes("[End]")) {
+      } else if (element.includes("[End]")) {
         Questions.push(questionData);
 
         break;
-      }
-
-
-      else {
+      } else {
         // console.log("enter into else for multiline")
         if (currentEnglishQuestion) {
-          englishQuestionArray.push(element)
+          englishQuestionArray.push(element);
           if (element != "") {
             currentEnglishQuestion.option += "<br />" + element;
             flag = 1;
           }
-
         } else if (currentEnglishOption) {
-          englishQuestionArray.push(element)
+          englishQuestionArray.push(element);
           if (element != "") {
             currentEnglishOption.option += "<br />" + element;
             flag = 1;
           }
-
         }
       }
     } else if (element && element.reference && currentEnglishQuestion) {
       // If it's an object with a reference and there's a current English question
-      englishQuestionArray.push(element)
+      englishQuestionArray.push(element);
 
       currentEnglishQuestion.image.push(element);
       flag = 1;
     } else if (element && element.reference && currentEnglishOption) {
       // If it's an object with a reference and there's a current English option
-      englishQuestionArray.push(element)
+      englishQuestionArray.push(element);
 
       currentEnglishOption.image.push(element);
       flag = 1;
     }
   }
 
-
-
-
-
-
-
-
   // console.log(question1Array);
   console.log(Questions);
   // console.log(englishQuestionArray)
-  // 
+  //
 
   for (j = 0; j < Questions.length; j++) {
     englishquestions.push(Questions[j].englishQuestion);
@@ -912,9 +888,8 @@ const processParagraphs = async (docxData) => {
     section.push(Questions[j].sections);
     solutions.push(Questions[j].EnglishSolution);
     hindisolutions.push(Questions[j].hindiSolution);
-
   }
-  console.log(Questions)
+  console.log(Questions);
   return {
     Questions,
     englishquestions,
@@ -939,7 +914,7 @@ const processParagraphs = async (docxData) => {
 const DocxReader = ({ onProcessedData }) => {
   const [DocQuestions, setDocQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [radioValue, setRadioValue] = useState("0")
+  const [radioValue, setRadioValue] = useState("0");
   // const [editorContent, setEditorContent] = useState("");
   const [equationVar, setEquationVar] = useState();
   const [mathml, setMathMl] = useState([]);
@@ -949,7 +924,7 @@ const DocxReader = ({ onProcessedData }) => {
     const file = event.target.files[0];
     reader.onload = async (e) => {
       try {
-        console.log(e.target)
+        console.log(e.target);
         const docxData = e.target.result;
         const processedData = await processParagraphs(docxData);
         const { Questions, mathmlElement, mainEquationArray } = processedData;
@@ -994,8 +969,7 @@ const DocxReader = ({ onProcessedData }) => {
 
   const radio_change_handler = (e) => {
     setRadioValue(e.target.value);
-
-  }
+  };
 
   // function numericToAlphabetic(index) {
   //   if (index >= 5) {
@@ -1028,50 +1002,55 @@ const DocxReader = ({ onProcessedData }) => {
     return (
       <div className="main_class_for_input_field_and_converter_image">
         <div>
-          <img className="converter_img_section" src={converter_img} alt="converter_img.png" />
+          <img
+            className="converter_img_section"
+            src={converter_img}
+            alt="converter_img.png"
+          />
         </div>
         <div className="master_input_collection_div">
           <div className="input_section_collections border border-3">
-
             {/* <p>No questions to display.</p> */}
-            <p>You have to use this as Identifier: [E] (#a, #b, #c, #d), [H] (ha, hb, hc, hd), [ans], [Sol], or [HSol]?</p>
+            <p>
+              You have to use this as Identifier: [E] (#a, #b, #c, #d), [H] (ha,
+              hb, hc, hd), [ans], [Sol], or [HSol]?
+            </p>
             {/* <label>No &nbsp; &nbsp; &nbsp; <input type="radio" name="option" value="1" checked={radioValue === "1"} onChange={radio_change_handler} /></label>
             <label>Yes &nbsp; &nbsp; &nbsp; <input type="radio" name="option" value="0" checked={radioValue === "0"} onChange={radio_change_handler} /></label> */}
             <div>
-                <div className="visible_invisible_input_section">
-                  <label>Identifier for English Question:-</label>
-                  <input type="text" value="[E]" readOnly/>
-                  <label>Identifier for English Options:-</label>
-                  <input type="text" value="(#a), (#b), (#c), (#d)" readOnly/>
-                  <label>Identifier for Hindi Questions:-</label>
-                  <input type="text" value="[H]" readOnly/>
-                  <label>Identifier for Hindi Options:-</label>
-                  <input type="text" value="(ha), (hb), (hc), (hd)" readOnly/>
-                  <label>Identifier for English Solutions:-</label>
-                  <input type="text" value="[Sol]" readOnly/>
-                  <label>Identifier for Hindi Solutions:-</label>
-                  <input type="text" value="[HSol]" readOnly/>
-                  <label>Identifier for Answer:-</label>
-                  <input type="text" value="[ans]" readOnly/>
-                </div> 
+              <div className="visible_invisible_input_section">
+                <label>Identifier for English Question:-</label>
+                <input type="text" value="[E]" readOnly />
+                <label>Identifier for English Options:-</label>
+                <input type="text" value="(#a), (#b), (#c), (#d)" readOnly />
+                <label>Identifier for Hindi Questions:-</label>
+                <input type="text" value="[H]" readOnly />
+                <label>Identifier for Hindi Options:-</label>
+                <input type="text" value="(ha), (hb), (hc), (hd)" readOnly />
+                <label>Identifier for English Solutions:-</label>
+                <input type="text" value="[Sol]" readOnly />
+                <label>Identifier for Hindi Solutions:-</label>
+                <input type="text" value="[HSol]" readOnly />
+                <label>Identifier for Answer:-</label>
+                <input type="text" value="[ans]" readOnly />
+              </div>
             </div>
 
             <input type="file" onChange={onFileUpload} name="docx-reader" />
           </div>
         </div>
-
       </div>
     );
   }
 
   const handleDownload = () => {
     // Convert the array object to a JSON string
-    const fileData = JSON.stringify(DocQuestions, null, 2);  // You can use 4 for more indented formatting
-    const blob = new Blob([fileData], { type: 'application/json' });
+    const fileData = JSON.stringify(DocQuestions, null, 2); // You can use 4 for more indented formatting
+    const blob = new Blob([fileData], { type: "application/json" });
 
     // Create a link element, use it to download the file and remove it
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
     link.download = "JSON File";
     document.body.appendChild(link);
@@ -1079,19 +1058,14 @@ const DocxReader = ({ onProcessedData }) => {
     document.body.removeChild(link);
   };
 
-  console.log(DocQuestions)
+  console.log(DocQuestions);
   return (
     <>
-
       <div className="main_div_section">
-
         <div>
-
           {/* <div dangerouslySetInnerHTML={{ __html: string }} /> */}
           {/* <div>{parse(sample2)}</div> */}
-          {DocQuestions ?
-
-
+          {DocQuestions ? (
             <div className="question_showing_section border border-3">
               {/* Display English option */}
               {Object.keys(currentQuestion).map((key, index) => {
@@ -1182,9 +1156,8 @@ const DocxReader = ({ onProcessedData }) => {
                 }
                 return null;
               })}
-
             </div>
-            :
+          ) : (
             <div className="input_type_file_class">
               {/* <input type="radio" />
         <input type="text" />
@@ -1192,12 +1165,15 @@ const DocxReader = ({ onProcessedData }) => {
         <input type="text" />
         <h1>Abhishek</h1> */}
               {/* <input type="file" onChange={onFileUpload} name="docx-reader" /> */}
-
             </div>
-
-          }
-          <div className="prev_next_btn">{/* Navigation buttons */}
-            <button onClick={handlePrevious} disabled={currentIndex === 0} className="btn btn-primary m-2">
+          )}
+          <div className="prev_next_btn">
+            {/* Navigation buttons */}
+            <button
+              onClick={handlePrevious}
+              disabled={currentIndex === 0}
+              className="btn btn-primary m-2"
+            >
               Previous
             </button>
             <button
@@ -1206,20 +1182,18 @@ const DocxReader = ({ onProcessedData }) => {
               className="btn btn-primary m-2"
             >
               Next
-            </button></div>
+            </button>
+          </div>
         </div>
-        <div className="download_json_file_btn"> <button onClick={handleDownload} className="btn btn-success m-2">Download JSON File</button></div>
+        <div className="download_json_file_btn">
+          {" "}
+          <button onClick={handleDownload} className="btn btn-success m-2">
+            Download JSON File
+          </button>
+        </div>
       </div>
     </>
   );
 };
 
 export default DocxReader;
-
-
-
-
-
-
-
-
